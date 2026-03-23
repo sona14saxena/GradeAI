@@ -1,0 +1,21 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+*.pyc
+
+# Node
+frontend/node_modules/
+frontend/.next/
+
+# Environments
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# Temp and Uploads
+backend/temp_uploads/
+
+# OS Files
+.DS_Store
+Thumbs.db
