@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -26,8 +27,14 @@ export default function DashboardPage() {
     const [data, setData] = useState<any>(null);
     const [summary, setSummary] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
+        const authStore = localStorage.getItem("facultyAuth");
+        if (!authStore) {
+            router.push("/login");
+            return;
+        }
 
         const fetchDashboardData = async () => {
             const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";

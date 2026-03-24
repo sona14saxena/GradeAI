@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { UploadCloud, FileType, CheckCircle2, UserCircle2 } from 'lucide-react';
 
 export default function UploadPage() {
@@ -15,6 +16,14 @@ export default function UploadPage() {
     const [modelAnswer, setModelAnswer] = useState<File | null>(null);
     const [studentFiles, setStudentFiles] = useState<FileList | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const authStore = localStorage.getItem("facultyAuth");
+        if (!authStore) {
+            router.push("/login");
+        }
+    }, [router]);
 
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 

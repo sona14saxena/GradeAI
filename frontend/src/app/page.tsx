@@ -1,10 +1,18 @@
 "use client";
 
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, BrainCircuit, ScanSearch, LineChart } from 'lucide-react';
 
 export default function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("facultyAuth")) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   return (
     <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-6 bg-gradient-to-b from-background to-secondary/20 overflow-hidden relative">
@@ -28,12 +36,20 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center py-6">
-          <Link href="/upload" className="group px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.3)] font-semibold transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
-            Initialize Evaluation <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link href="/dashboard" className="px-8 py-4 bg-secondary text-secondary-foreground border border-border hover:border-primary/50 hover:bg-secondary/80 rounded-xl shadow-sm font-semibold transition-all duration-300 transform hover:-translate-y-1">
-            Access Dashboard
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link href="/upload" className="group px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.3)] font-semibold transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                Initialize Evaluation <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href="/dashboard" className="px-8 py-4 bg-secondary text-secondary-foreground border border-border hover:border-primary/50 hover:bg-secondary/80 rounded-xl shadow-sm font-semibold transition-all duration-300 transform hover:-translate-y-1">
+                Access Dashboard
+              </Link>
+            </>
+          ) : (
+            <Link href="/login" className="group px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.3)] font-semibold transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+              Faculty Login <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          )}
         </div>
 
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">

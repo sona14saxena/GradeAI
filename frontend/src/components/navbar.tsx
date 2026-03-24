@@ -8,10 +8,23 @@ import Link from "next/link"
 export function Navbar() {
     const { setTheme, theme, resolvedTheme } = useTheme()
     const [mounted, setMounted] = React.useState(false)
+    const [user, setUser] = React.useState<{ name: string, faculty_id: string } | null>(null)
 
     React.useEffect(() => {
         setMounted(true)
+        const auth = localStorage.getItem("facultyAuth")
+        if (auth) {
+            try {
+                setUser(JSON.parse(auth))
+            } catch (e) { }
+        }
     }, [])
+
+    const handleLogout = () => {
+        localStorage.removeItem("facultyAuth")
+        setUser(null)
+        window.location.href = "/login"
+    }
 
     return (
         <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/70 border-b border-border/50">
@@ -21,12 +34,27 @@ export function Navbar() {
                         GradeAI
                     </Link>
                     <div className="hidden md:flex items-center gap-4 text-sm font-medium text-muted-foreground">
-                        <Link href="/upload" className="hover:text-foreground transition-colors">Upload</Link>
-                        <Link href="/dashboard" className="hover:text-foreground transition-colors">Dashboard</Link>
+                        {user && (
+                            <>
+                                <Link href="/upload" className="hover:text-foreground transition-colors">Upload</Link>
+                                <Link href="/dashboard" className="hover:text-foreground transition-colors">Dashboard</Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
                 <div className="flex items-center gap-3">
+                    {mounted && user && (
+                        <div className="flex items-center gap-4 mr-2">
+                            <span className="text-sm font-semibold text-foreground">Welcome, {user.name}</span>
+                            <button onClick={handleLogout} className="text-sm font-medium text-destructive hover:text-destructive/80 transition-colors">Logout</button>
+                        </div>
+                    )}
+                    {mounted && !user && (
+                        <div className="flex items-center gap-4 mr-2">
+                            <Link href="/login" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">Faculty Login</Link>
+                        </div>
+                    )}
                     {mounted && (
                         <div className="flex items-center bg-secondary/50 p-1 rounded-full border border-border/50">
                             <button
