@@ -11,7 +11,7 @@ app = FastAPI(title="GradeAI API", description="AI-based Handwritten Answer Shee
 # Configure CORS for Deployment
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origin.strip() for origin in settings.CORS_ORIGINS.split(",")],
+    allow_origin_regex="https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
