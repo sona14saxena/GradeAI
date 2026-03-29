@@ -21,6 +21,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Pre-download NLTK data during build
 RUN python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
 
+# Pre-download SentenceTransformer model during build
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+
 # Copy application code
 COPY . .
 

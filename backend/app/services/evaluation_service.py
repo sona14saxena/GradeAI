@@ -12,7 +12,7 @@ from nltk.tokenize import word_tokenize
 
 class EvaluationEngine:
     def __init__(self):
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        self._model = None
         self.lemmatizer = WordNetLemmatizer()
         
         try:
@@ -23,6 +23,14 @@ class EvaluationEngine:
             nltk.download('wordnet')
             
         self.stop_words = set(stopwords.words('english'))
+
+    @property
+    def model(self):
+        if self._model is None:
+            print("Loading SentenceTransformer model... (This may take a minute)")
+            self._model = SentenceTransformer('all-MiniLM-L6-v2')
+            print("Model loaded successfully!")
+        return self._model
 
     def clean_text(self, text: str) -> str:
         if not text:
